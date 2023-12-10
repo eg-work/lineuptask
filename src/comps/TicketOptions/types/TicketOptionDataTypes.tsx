@@ -1,3 +1,8 @@
+/*
+
+This file simply contains mappings from the swagger documentation for the response of the API call
+
+*/
 interface Price {
   id: number
   value: number
@@ -42,10 +47,6 @@ interface Pricing {
   capacityRemaining: number
   priceBand: PriceBrandWithVariants
 }
-
-
-
-
 interface TicketOption {
   id: number
   eventId: number

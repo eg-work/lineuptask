@@ -18,6 +18,7 @@ function computeTicketOptionRowFromTicketOptions(ticketOption: TicketOption): Ti
   
   const { pricing } = ticketOption
   
+  //iterating over the prices, using object deconstructing  syntax to extract properties
   pricing.forEach(({ priceBand, }, ii) => {
 
 
@@ -25,21 +26,27 @@ function computeTicketOptionRowFromTicketOptions(ticketOption: TicketOption): Ti
     variants.forEach(({ adjusters, description, id, name, price, }, ii) => {
 
       let fee = null
+
       //checking for the presense of an element in the list as it's a list and not raw value
-      //
+      //unsure the wider functionality, for example, if adjusters can be empty list etc
       if (adjusters.length > 0) {
         fee = adjusters[0].price.value
       }
 
+      //formatting the fee string for easier displaying
       let fee_string = ""
       if (fee != null) {
         fee_string = `(+ £${roundToDecimalPlaces(fee, 2)} fee)`
       }
 
       
+      //see types file for explanation of properties
       const ticketOptionRow: TicketOptionRow = {
+        //title is combination of names in different objects
         title: `${priceBand.name} - ${name}`,
+        //simple extraction
         band_description: priceBand.description,
+        //simple extraction
         variant_description: description,
         //I originally started out with just price and fee as numbers
         //but as the actual design has more than just the number, ie pound sign, brackets etc
@@ -50,9 +57,12 @@ function computeTicketOptionRowFromTicketOptions(ticketOption: TicketOption): Ti
         price_string: `£${roundToDecimalPlaces(price.value, 2)}`,
         fee,
         fee_string,
+        //hopefully unique as dicussed
         ticket_price_id: price.id,
+        //included for dicussion 
         price_band_id: priceBand.id,
         variant_id: id,
+        //setup to work here, but results in poor implementation
         purchased_ticket_count: 0,
       }
 

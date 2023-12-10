@@ -2,6 +2,13 @@
 
 /* styles for the TicketOptionRow component */
 /* rows showing the tickets available to the end users */
+/*
+  Contains the top level 'ticketOptionRow'
+  And then 3 sub parts
+    - titles represents the left most column
+    - prices represents the middle 
+    - tickets represents the right most columns, with buttons for interaction
+*/
 
 .ticketOptionRow {
   margin: 10px; 

@@ -1,6 +1,9 @@
 @import url("TicketOptionRowStyles.css");
 
 
+/* css file for the TicketOptions entry point */
+/* usually relating to layout and highlevel things */
+
 .ticketOptions {
   display: grid;
   grid-template-rows: 50px auto;

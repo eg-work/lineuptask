@@ -6,6 +6,31 @@ import type { TicketOption } from '../types/TicketOptionDataTypes'
 import type { TicketOptionRow } from '../types/TicketOptionReactTypes'
 // import type {} from '@redux-devtools/extension' // required for devtools typing
 
+/*
+This file is the most complex and the brain of the component.
+It contains all the state management logic for the ticket options component
+
+Most logic is contained in the functions given below, but the most complex logic is outsourced to files without the funcs folder
+This enables the more-complex functions/actions to not bloat this file directly and aids in testing complex actions,
+As functionality can be tested independantly and in a unit-test fashion from the functions in the funcs folder.
+
+Althought this approach removes the needs for passing props around, it creates a dependancy on managing the state correctly.
+For instance, the actions to get new tickets depends on the states current eventId,performanceId. Due to this dependancy the ids
+must be set properly and managed according for it all to play nicely.
+
+As this system progressed, you could make this store more generic and move those dependancies away. 
+Or you can simply set up your application to have a fail-safe like architecture which will ensure the right ids are set.
+
+This concept doesn't just apply to the id's in the store, but other values too.
+
+Also as this is just one store, it's hard to be replicated across multiple different components of the same type. 
+Therefore, the approach would need to be modified to handle these cases.
+
+
+
+*/
+
+
 interface TicketOptionsState {
   eventId: number | null
   performanceId: number | null
@@ -32,31 +57,37 @@ const useTicketOptionsStore = create<TicketOptionsState>()(
       (set, get) => ({
         eventId: null,
         performanceId: null,
+        //this is overly simply and nuanced
         setEventAndPerformanceId: (eventId, performanceId) => {
           set({ eventId, performanceId, })
         },
+        //
         getTicketOptions: async () => {
           const eventId = get().eventId
           const performanceId = get().performanceId
+          //here is part of the dependencies which are mentioned earlier
           if (eventId == null || performanceId == null) return;
+          //no error handling
           const data = await TicketOptionService.getTicketOptions({ event_id: eventId, performance_id: performanceId })
           set({ ticketOption: data })
+          //instantly computes the react types from the business logic types
           get().computePriceBands() 
         },
         ticketOption: null,
         //computes the actual price bands to display on the screen as one long list
         computePriceBands: () => {
           const ticketOption = get().ticketOption
-          //this is a bad check, in reality we should create the state 
+          //this type of null check is a bad, in reality we should create the state 
           //such that we have assurance it will always be an object
           //otherwise it creates unnecessary checking throughout the app
+          //but seen as though it's only references once, it doesn't harm us too much here
           if (ticketOption == null) return
           const ticketOptionRows = computeTicketOptionRowFromTicketOptions(ticketOption)
           set({ ticketOptionRows })
         },
         ticketOptionRows: [],
         descreaseTickets: (ticket_price_id: number) => {
-          //just did this in the most basic way for time + no understanding of where the tickets go further
+          //just did this in the most basic way for time + no understanding of where the tickets/functionality go further
           //also setting the whole store's list everytime is terrible
           const ticketOptionRows = get().ticketOptionRows.slice()
           const ticketRowIndex = ticketOptionRows.findIndex(x => x.ticket_price_id === ticket_price_id)

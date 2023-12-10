@@ -1,3 +1,7 @@
+# First
+I started with 'TicketOptionsService.ts' as I wanted to ensure the API would work correctly.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

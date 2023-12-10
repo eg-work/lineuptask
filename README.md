@@ -1,14 +1,12 @@
-# First
-I started with 'TicketOptionsService.ts' as I wanted to ensure the API would work correctly.
+This is a simple CRA. There are no modifications to it in that regard. Running should be the usual.
 
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
+## Running the app
 
 In the project directory, you can run:
+
+### `yarn install`
+
+Intalls the necessary packages.
 
 ### `yarn start`
 
@@ -18,33 +16,43 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
+## Overall approach
+The app uses axios for some request management and zustand for some state management.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app is built purposely for dicussion and to meet the objectives of the tech task.\
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Some of the naming conventions are a bit lack-luster or somewhat inconsistent. It might require a little imagination to see what they should be called.
 
-### `yarn eject`
+There are no tests. Setting up the test environment to play nicely with zustand wasn't possible during the time.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In any case, the main ethos is a core API call to get the ticket options / pricing information. This is then computed into a frontend-only type to be processed into components. I've made a distinction between the business-logic types, which are returned from the API and frontend-only types which are what plays nicely with our components.\
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This method of transforming the server response into a state which is closest to the end user, or end components greatly simplifies the frontend imho. It offloads most heavy testing to the transformation function itself. It also reduces the in-component complexities and makes for a purpose-built tidy repo.\
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+There are trade offs, hopefully which we can discuss. Given a better understanding of where this work sits in the wider scope at line-up would of most likely meant different decisions to be made.\
 
-## Learn More
+The folder structure for the 'TicketOptions' component is as follows:
+- comps
+  - holds auxillary components for the 'TicketOptions' component, in this case the actual rows.
+- funcs
+  - any functions which are used. I like to do one function per file. These are usually specific or bespoke to the component itself.
+- service
+  - holds the api calls
+- state
+  - holds the zustand store and the state management functionality of the component
+- styles
+  - holds css stylings for the component, or auxillary components
+- tests
+  - holds the tests for the component, or auxillary components
+- types
+  - holds the types, split into 'business logic' types and 'react' types
+- single file represents the entry point for the component
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+
